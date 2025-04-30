@@ -1,0 +1,570 @@
+<!-- app/views/apprenant/list.html.php -->
+
+<div class="apprenants-container">
+    <div class="apprenants-header">
+        <div class="header-title">
+            <h1>Apprenants</h1>
+            <span class="counter">180 apprenants</span>
+        </div>
+        
+        <div class="apprenants-actions">
+            <div class="search-box">
+                <i class="search-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </i>
+                <input type="text" placeholder="Rechercher...">
+            </div>
+            
+            <div class="filter-dropdown">
+                <select aria-label="Filtre par classe">
+                    <option value="">Filtre par classe</option>
+                    <?php foreach ($referentiels as $ref): ?>
+                        <option value="<?= $ref['id'] ?>" <?= isset($classe_filter) && $classe_filter === $ref['id'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($ref['name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            
+            <div class="filter-dropdown">
+                <select aria-label="Filtre par status">
+                    <option value="">Filtre par status</option>
+                    <option value="actif" <?= isset($status_filter) && $status_filter === 'actif' ? 'selected' : '' ?>>Actif</option>
+                    <option value="remplacé" <?= isset($status_filter) && $status_filter === 'remplacé' ? 'selected' : '' ?>>Remplacé</option>
+                </select>
+            </div>
+            
+            <a href="?page=download-apprenants-list" class="download-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Télécharger la liste
+            </a>
+            
+            <a href="?page=add-apprenant" class="add-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 12h-8m-4 0H4m8 4V8"></path>
+                </svg>
+                Ajouter apprenant
+            </a>
+        </div>
+    </div>
+
+    <div class="tabs-container">
+        <div class="tabs">
+            <div class="tab active">Liste des retenues</div>
+            <div class="tab">Liste d'attente</div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table class="apprenants-table">
+            <thead>
+                <tr>
+                    <th class="photo-col">Photo</th>
+                    <th class="matricule-col">Matricule</th>
+                    <th class="nom-col">Nom Complet</th>
+                    <th class="adresse-col">Adresse</th>
+                    <th class="telephone-col">Téléphone</th>
+                    <th class="referentiel-col">Référentiel</th>
+                    <th class="statut-col">Statut</th>
+                    <th class="actions-col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($apprenants)): ?>
+                    <tr>
+                        <td colspan="8" class="no-data">Aucun apprenant trouvé</td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($apprenants as $apprenant): ?>
+                        <tr>
+                            <td class="photo-col">
+                                <img src="<?= htmlspecialchars($apprenant['photo']) ?>" alt="Photo de <?= htmlspecialchars($apprenant['prenom']) ?>" class="apprenant-photo">
+                            </td>
+                            <td class="matricule-col"><?= htmlspecialchars($apprenant['matricule']) ?></td>
+                            <td class="nom-col"><?= htmlspecialchars($apprenant['nom'] . ' ' . $apprenant['prenom']) ?></td>
+                            <td class="adresse-col"><?= htmlspecialchars($apprenant['adresse']) ?></td>
+                            <td class="telephone-col"><?= htmlspecialchars($apprenant['telephone']) ?></td>
+                            <td class="referentiel-col">
+                                <?php
+                                $referentiel_id = $apprenant['referentiel_id'];
+                                $referentiel_name = isset($referentiels_map[$referentiel_id])
+                                    ? $referentiels_map[$referentiel_id]
+                                    : $referentiel_id;
+                                
+                                // Déterminer la classe CSS en fonction du nom du référentiel
+                                $badge_class = '';
+                                if (stripos($referentiel_name, 'WEB') !== false || stripos($referentiel_name, 'MOBILE') !== false) {
+                                    $badge_class = 'dev-web';
+                                } elseif (stripos($referentiel_name, 'DIG') !== false) {
+                                    $badge_class = 'ref-dig';
+                                } elseif (stripos($referentiel_name, 'DATA') !== false) {
+                                    $badge_class = 'dev-data';
+                                } elseif (stripos($referentiel_name, 'AWS') !== false) {
+                                    $badge_class = 'aws';
+                                } elseif (stripos($referentiel_name, 'HACK') !== false) {
+                                    $badge_class = 'hackeuse';
+                                }
+                                ?>
+                                <span class="ref-badge <?= $badge_class ?>"><?= htmlspecialchars($referentiel_name) ?></span>
+                            </td>
+                            <td class="statut-col">
+                                <span class="statut-badge <?= $apprenant['statut'] === 'actif' ? 'actif' : 'remplace' ?>">
+                                    <?= ucfirst($apprenant['statut']) ?>
+                                </span>
+                            </td>
+                            <td class="actions-col">
+                                <button type="button" class="action-dots">
+                                    <svg class="dots-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                        <circle cx="12" cy="5" r="2"></circle>
+                                        <circle cx="12" cy="12" r="2"></circle>
+                                        <circle cx="12" cy="19" r="2"></circle>
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination-footer">
+        <div class="pagination-info">
+            <span>Apprenants/page</span>
+            <select>
+                <option>10</option>
+                <option>20</option>
+                <option>30</option>
+                <option>50</option>
+            </select>
+        </div>
+        <div class="pagination-count">
+            1 à 10 apprenants pour 142
+        </div>
+        <div class="pagination-controls">
+            <button class="pagination-btn prev" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <button class="pagination-btn page-number active">1</button>
+            <button class="pagination-btn page-number">2</button>
+            <span class="pagination-ellipsis">...</span>
+            <button class="pagination-btn page-number">10</button>
+            <button class="pagination-btn next">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Styles pour reproduire exactement la liste des apprenants */
+.apprenants-container {
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 0;
+}
+
+.apprenants-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.header-title {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.header-title h1 {
+    color: #19A88C;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.header-title .counter {
+    color: #F8A427;
+    font-size: 14px;
+    font-weight: 400;
+    background-color: #FFEFD6;
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+.apprenants-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    position: relative;
+    height: 36px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+.search-box input {
+    width: 200px;
+    height: 100%;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 0 10px 0 35px;
+    font-size: 14px;
+    color: #333;
+    background-color: white;
+}
+
+.filter-dropdown select {
+    height: 36px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 0 10px;
+    font-size: 14px;
+    color: #333;
+    background-color: white;
+    cursor: pointer;
+    min-width: 140px;
+}
+
+.download-button, .add-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+    padding: 0 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.download-button {
+    background-color: #222;
+    color: white;
+    border: none;
+}
+
+.add-button {
+    background-color: #19A88C;
+    color: white;
+    border: none;
+}
+
+.tabs-container {
+    margin-top: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.tabs {
+    display: flex;
+    gap: 20px;
+}
+
+.tab {
+    padding: 10px 0;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    position: relative;
+}
+
+.tab.active {
+    color: #333;
+    font-weight: 500;
+}
+
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #F8A427;
+    border-radius: 3px 3px 0 0;
+}
+
+/* Table styles */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.apprenants-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.apprenants-table th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    color: white;
+    background-color: #F8A427;
+}
+
+.apprenants-table th:first-child {
+    border-top-left-radius: 4px;
+}
+
+.apprenants-table th:last-child {
+    border-top-right-radius: 4px;
+}
+
+.apprenants-table td {
+    padding: 12px 15px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.apprenants-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Column widths */
+.photo-col {
+    width: 60px;
+}
+
+.matricule-col {
+    width: 80px;
+}
+
+.nom-col {
+    width: 180px;
+}
+
+.referentiel-col, .statut-col {
+    width: 120px;
+}
+
+.actions-col {
+    width: 70px;
+    text-align: center;
+}
+
+/* Photo style */
+.apprenant-photo {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Badge styles */
+.ref-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.dev-web {
+    background-color: #E6F7F5;
+    color: #19A88C;
+}
+
+.ref-dig {
+    background-color: #E6EEFA;
+    color: #4073ff;
+}
+
+.dev-data {
+    background-color: #F0E5FA;
+    color: #9750dd;
+}
+
+.aws {
+    background-color: #FFF3D9;
+    color: #F8A427;
+}
+
+.hackeuse {
+    background-color: #FFE5F1;
+    color: #ff5cb0;
+}
+
+.statut-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.actif {
+    background-color: #E6F7F5;
+    color: #19A88C;
+}
+
+.remplace {
+    background-color: #FFE5E5;
+    color: #dd5050;
+}
+
+/* Action button */
+.action-dots {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.dots-icon {
+    transform: rotate(90deg);
+}
+
+/* Pagination */
+.pagination-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    margin-top: 20px;
+}
+
+.pagination-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.pagination-info select {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.pagination-count {
+    font-size: 14px;
+    color: #666;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.pagination-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+}
+
+.pagination-btn.active {
+    background-color: #F8A427;
+    color: white;
+    border-color: #F8A427;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-ellipsis {
+    margin: 0 5px;
+    color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .apprenants-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .apprenants-actions {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+}
+
+@media (max-width: 991px) {
+    .adresse-col,
+    .telephone-col {
+        display: none;
+    }
+}
+
+@media (max-width: 767px) {
+    .referentiel-col {
+        display: none;
+    }
+    
+    .pagination-footer {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    .pagination-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+
+<script>
+// Script for handling tabs
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            tabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+});
+</script>
+
+mot de passe d'application: zcqt ffmg wrtp sxhb

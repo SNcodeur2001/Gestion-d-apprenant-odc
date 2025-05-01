@@ -48,6 +48,7 @@ switch ($page) {
         break;
 
     default:
+        // Utiliser le routeur centralisé
         App\Route\route($page);
         break;
 }

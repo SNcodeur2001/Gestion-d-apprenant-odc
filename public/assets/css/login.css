@@ -1,0 +1,377 @@
+/* Réinitialisation des styles de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Add CSS variables for better maintainability */
+:root {
+    --primary-color: #0E8F7E;
+    --secondary-color: #FF6600;
+    --background-color: #f5f5f5;
+    --text-color: #333;
+    --error-color: #e74c3c;
+    --success-color: #2ecc71;
+    --transition-speed: 0.3s;
+    --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Conteneur principal */
+.auth-container {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
+    width: 100%;
+    max-width: 450px;
+    height: 90vh;
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 50px;
+    animation: fadeIn 0.8s ease-out;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.auth-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* Bande latérale orange */
+.auth-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 99%;
+    background-color: var(--secondary-color);
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+/* Bande inférieure verte */
+.auth-container::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 99%;
+    height: 10px;
+    background-color: var(--primary-color);
+    border-bottom-left-radius: 15px;
+}
+
+/* En-tête et logo */
+.auth-header {
+    text-align: center;
+    padding: 30px 20px 20px;
+}
+
+.auth-header img {
+    width: 120px;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.auth-header h1 {
+    color: var(--primary-color);
+    font-size: 22px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.auth-header h2 {
+    color: var(--secondary-color);
+    font-size: 16px;
+    font-weight: normal;
+}
+
+/* Titre principal */
+.auth-title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    margin: 25px 0 15px;
+    color: var(--text-color);
+}
+
+/* Description sous le titre */
+.auth-description {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    margin: 0 30px 25px;
+    line-height: 1.4;
+}
+
+/* Formulaire */
+.auth-form {
+    padding: 0 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #444;
+    font-size: 15px;
+    transition: color var(--transition-speed);
+}
+
+.form-group:focus-within label {
+    color: var(--primary-color);
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: all var(--transition-speed);
+    background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
+}
+
+.form-control:hover {
+    border-color: var(--primary-color);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(14, 143, 126, 0.2);
+    transform: translateY(-1px);
+}
+
+/* Message d'erreur */
+.error-message {
+    color: var(--error-color);
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+/* Lien mot de passe oublié */
+.forgot-password {
+    text-align: right;
+    margin-bottom: 25px;
+}
+
+.forgot-password a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 14px;
+    position: relative;
+}
+
+.forgot-password a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transition: transform var(--transition-speed);
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.forgot-password a:hover::after {
+    transform: scaleX(1);
+}
+
+/* Pied de formulaire */
+.form-footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+}
+
+.form-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    position: relative;
+}
+
+.form-footer a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transition: transform var(--transition-speed);
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+}
+
+.form-footer a:hover::after {
+    transform: scaleX(1);
+}
+
+/* Bouton de connexion */
+.btn-login {
+    width: 100%;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    box-shadow: 0 3px 10px rgba(255, 102, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-login::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-login:hover {
+    background-color: #e55c00;
+}
+
+.btn-login:hover::before {
+    width: 300%;
+    height: 300%;
+}
+
+.btn-login:active {
+    transform: translateY(1px);
+}
+
+.btn-login.loading {
+    background-image: linear-gradient(
+        -45deg,
+        var(--secondary-color) 25%,
+        #e55c00 25%,
+        #e55c00 50%,
+        var(--secondary-color) 50%,
+        var(--secondary-color) 75%,
+        #e55c00 75%,
+        #e55c00
+    );
+    background-size: 40px 40px;
+    animation: loading-animation 1s linear infinite;
+}
+
+/* Messages d'alerte */
+.alert {
+    padding: 12px 15px;
+    margin: 0 30px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    animation: slideIn 0.5s ease-out;
+    transition: all var(--transition-speed);
+}
+
+.alert:hover {
+    transform: translateX(5px);
+}
+
+.alert-danger {
+    background-color: #fde2e2;
+    color: var(--error-color);
+    border: 1px solid #f8caca;
+}
+
+.alert-success {
+    background-color: #d4f5e8;
+    color: var(--primary-color);
+    border: 1px solid #a7e8d0;
+}
+
+.alert-info {
+    background-color: #e2f3fd;
+    color: #3498db;
+    border: 1px solid #c9e6f7;
+}
+
+/* Add keyframe animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes loading-animation {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 0; }
+}
+
+/* Enhance focus outlines for accessibility */
+*:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .auth-container {
+        border-radius: 10px;
+    }
+    
+    .auth-header {
+        padding: 20px 15px 15px;
+    }
+    
+    .auth-title {
+        font-size: 22px;
+        margin: 20px 0 10px;
+    }
+    
+    .auth-description {
+        margin: 0 20px 20px;
+        font-size: 13px;
+    }
+    
+    .auth-form {
+        padding: 0 20px;
+    }
+    
+    .form-control {
+        padding: 10px 12px;
+    }
+    
+    .btn-login {
+        padding: 12px;
+    }
+}

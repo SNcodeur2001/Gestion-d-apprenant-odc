@@ -567,4 +567,3 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-mot de passe d'application: zcqt ffmg wrtp sxhb

@@ -568,6 +568,114 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Assurez-vous que la sidebar est configurée comme un conteneur flex */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #222;
+    color: #fff;
+    width: 250px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+}
+
+.sidebar-menu {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px 0;
+}
+
+/* Style pour le footer de la sidebar */
+.sidebar-footer {
+    margin-top: auto;
+    padding: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Style pour le bouton de déconnexion */
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #f8f9fa;
+    padding: 12px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.logout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #F8A427; /* Couleur orange de la charte */
+}
+
+.logout-btn svg {
+    color: #f8f9fa;
+    transition: color 0.2s ease;
+}
+
+.logout-btn:hover svg {
+    color: #F8A427; /* Couleur orange de la charte */
+}
+/* Assurez-vous que la sidebar est configurée comme un conteneur flex */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #222;
+    color: #fff;
+    width: 250px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+}
+
+.sidebar-menu {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px 0;
+}
+
+/* Style pour le footer de la sidebar */
+.sidebar-footer {
+    margin-top: auto;
+    padding: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Style pour le bouton de déconnexion */
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #f8f9fa;
+    padding: 12px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.logout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #F8A427; /* Couleur orange de la charte */
+}
+
+.logout-btn svg {
+    color: #f8f9fa;
+    transition: color 0.2s ease;
+}
+
+.logout-btn:hover svg {
+    color: #F8A427; /* Couleur orange de la charte */
+}
+
 </style>
 
 <!-- <script>

@@ -83,6 +83,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'apprenants';
                 <div class="dropdown-content">
                     <a href="?page=download-apprenants-list&format=excel">Format Excel</a>
                     <a href="?page=download-apprenants-list&format=pdf">Format PDF</a>
+                    <a href="?page=download-apprenants-list&format=csv">Format CSV</a>
                 </div>
             </div>
 
@@ -186,7 +187,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'apprenants';
                                     <div class="actions-dropdown">
                                         <a href="?page=view-apprenant&id=<?= $apprenant['id'] ?>" class="dropdown-item">
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11-8-11-8z"></path>
+                                                <path d="M1 12s4-8 11-8 11 8 11-8-4 8-11-8-11-8z"></path>
                                                 <circle cx="12" cy="12" r="3"></circle>
                                             </svg>
                                             Voir
@@ -333,10 +334,13 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'apprenants';
                                 </ul>
                             </td>
                             <td>
-                                <form action="?page=correct-waiting-apprenant" method="POST">
-                                    <input type="hidden" name="apprenant_index" value="<?= $index ?>">
-                                    <button type="submit" class="btn-correct">Corriger</button>
-                                </form>
+                                <a href="?page=correct-waiting-apprenant&index=<?= $index ?>" class="btn-correct">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                    Corriger
+                                </a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -433,18 +437,31 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'apprenants';
 }
 
 .btn-correct {
-    padding: 6px 12px;
-    background-color: #3498db;
+
+
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #F8A427;
     color: white;
     border: none;
     border-radius: 4px;
-    cursor: pointer;
+
+    padding: 6px 12px;
     font-size: 13px;
+    text-decoration: none;
     transition: background-color 0.2s;
 }
 
 .btn-correct:hover {
-    background-color: #2980b9;
+
+    background-color: #e09320;
+    color: white;
+}
+
+.btn-correct svg {
+    width: 14px;
+    height: 14px;
 }
 
 /* Style général pour la section des apprenants */
@@ -874,18 +891,126 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'apprenants';
     background-position: right 10px center;
 }
 
-/* Style pour la barre de téléchargement */
-.custom-dropdown .dropdown-btn {
-    height: 38px;
-    background-color: #222;
+/* Style pour le dropdown de téléchargement */
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #4F81BD; /* Bleu cohérent avec le thème */
     color: white;
     border: none;
     border-radius: 4px;
-    padding: 0 15px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    padding: 8px 15px;
     font-size: 14px;
     cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dropdown-btn:hover {
+    background-color: #3a6491; /* Version plus foncée pour le hover */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    z-index: 10;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    font-size: 14px;
+}
+
+.dropdown-content a:hover {
+    background-color: #f5f5f5;
+    color: #4F81BD; /* Couleur cohérente avec le thème */
+}
+
+.custom-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Mise à jour des boutons pour respecter la charte graphique */
+.import-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #F8A427; /* Orange plus doux */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.import-button:hover {
+    background-color: #e09320; /* Version plus foncée pour le hover */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.add-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #5CB85C; /* Vert plus doux qui s'intègre mieux */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.add-button:hover {
+    background-color: #4a9d4a; /* Version plus foncée pour le hover */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Ajout d'un style commun pour aligner les boutons */
+.apprenants-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+/* Ajustement pour les écrans plus petits */
+@media (max-width: 768px) {
+    .apprenants-actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .custom-dropdown, .import-button, .add-button {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    
+    .dropdown-content {
+        width: 100%;
+    }
 }
 </style>

@@ -1,416 +1,630 @@
-<!-- app/views/apprenant/view.html.php -->
+<!-- Titre de la page -->
+<div class="apprenant-header">
+    <h1 class="app-title">Apprenants</h1>
+    <span class="page-title">/ Détails</span>
+</div>
 
-<div class="container">
-    <div class="header">
-        <div class="header-title">
-            <h1>Détails de l'apprenant</h1>
-            <div class="header-subtitle">Promotion: <?= isset($promotion['name']) ? htmlspecialchars($promotion['name']) : 'Non définie' ?></div>
-        </div>
-        <a href="?page=apprenants" class="btn-back">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            Retour aux apprenants
-        </a>
-    </div>
-
+<!-- Contenu principal des détails de l'apprenant -->
+<div class="apprenant-content-wrapper">
+    <!-- Profil et infos de contact -->
     <div class="apprenant-profile">
-        <div class="profile-header">
-            <div class="profile-avatar">
-                <img src="<?= htmlspecialchars($apprenant['photo']) ?>" alt="Photo de <?= htmlspecialchars($apprenant['prenom']) ?>">
+        <a href="?page=apprenants" class="back-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+            </svg>
+            Retour sur la liste
+        </a>
+        
+        <div class="profile-section">
+            <div class="profile-image">
+                <img src="<?= $apprenant['photo'] ?>" alt="<?= htmlspecialchars($apprenant['prenom'] . ' ' . $apprenant['nom']) ?>">
             </div>
-            <div class="profile-info">
-                <h2 class="profile-name"><?= htmlspecialchars($apprenant['nom'] . ' ' . $apprenant['prenom']) ?></h2>
-                <div class="profile-matricule">Matricule: <?= htmlspecialchars($apprenant['matricule']) ?></div>
-                <div class="profile-status">
-                    <span class="statut-badge <?= $apprenant['statut'] === 'actif' ? 'actif' : 'remplace' ?>">
-                        <?= ucfirst($apprenant['statut']) ?>
-                    </span>
-                </div>
+            <h2 class="profile-name"><?= htmlspecialchars($apprenant['prenom'] . ' ' . $apprenant['nom']) ?></h2>
+            <div class="profile-role"><?= htmlspecialchars($role ?? 'DEV WEB/MOBILE') ?></div>
+            <div class="profile-status"><?= ucfirst($apprenant['statut']) ?></div>
+        </div>
+        
+        <div class="contact-info">
+            <div class="contact-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+                <span><?= htmlspecialchars($apprenant['telephone']) ?></span>
             </div>
-            <div class="profile-actions">
-                <a href="?page=edit-apprenant&id=<?= $apprenant['id'] ?>" class="btn-edit">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                    </svg>
-                    Modifier
-                </a>
-                <?php if ($apprenant['statut'] === 'actif') { ?>
-                    <a href="?page=replace-apprenant&id=<?= $apprenant['id'] ?>" class="btn-replace">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M23 4v6h-6"></path>
-                            <path d="M1 20v-6h6"></path>
-                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-                        </svg>
-                        Remplacer
-                    </a>
-                <?php } ?>
+            <div class="contact-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <span><?= htmlspecialchars($apprenant['email']) ?></span>
+            </div>
+            <div class="contact-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span><?= htmlspecialchars($apprenant['adresse']) ?></span>
             </div>
         </div>
-
-        <div class="profile-content">
-            <div class="profile-section">
-                <h3 class="section-title">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
+    </div>
+    
+    <!-- Statistiques et modules -->
+    <div class="apprenant-details">
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon presence-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+                        <path d="M9 12l2 2 4-4"></path>
                     </svg>
-                    Informations personnelles
-                </h3>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <div class="info-label">Date de naissance</div>
-                        <div class="info-value"><?= date('d/m/Y', strtotime($apprenant['date_naissance'])) ?></div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Lieu de naissance</div>
-                        <div class="info-value"><?= htmlspecialchars($apprenant['lieu_naissance']) ?></div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Date d'inscription</div>
-                        <div class="info-value"><?= date('d/m/Y', strtotime($apprenant['date_inscription'])) ?></div>
-                    </div>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value"><?= $presences ?? 20 ?></div>
+                    <div class="stat-label">Présence(s)</div>
                 </div>
             </div>
-
-            <div class="profile-section">
-                <h3 class="section-title">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            
+            <div class="stat-card">
+                <div class="stat-icon retard-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
                     </svg>
-                    Coordonnées
-                </h3>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <div class="info-label">Email</div>
-                        <div class="info-value"><?= htmlspecialchars($apprenant['email']) ?></div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Téléphone</div>
-                        <div class="info-value"><?= htmlspecialchars($apprenant['telephone']) ?></div>
-                    </div>
-                    <div class="info-item full-width">
-                        <div class="info-label">Adresse</div>
-                        <div class="info-value"><?= htmlspecialchars($apprenant['adresse']) ?></div>
-                    </div>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value"><?= $retards ?? 5 ?></div>
+                    <div class="stat-label">Retard(s)</div>
                 </div>
             </div>
-
-            <div class="profile-section">
-                <h3 class="section-title">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            
+            <div class="stat-card">
+                <div class="stat-icon absence-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
                     </svg>
-                    Formation
-                </h3>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <div class="info-label">Promotion</div>
-                        <div class="info-value"><?= isset($promotion['name']) ? htmlspecialchars($promotion['name']) : 'Non définie' ?></div>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value"><?= $absences ?? 1 ?></div>
+                    <div class="stat-label">Absence(s)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tabs-header">
+            <div class="tab-title">Programme & Modules</div>
+            <div class="absences-info">
+                Total absences par étudiant
+            </div>
+        </div>
+        
+        <div class="modules-grid">
+            <!-- Module 1 -->
+            <div class="module-card colored-border algo-border">
+                <div class="module-header">
+                    <div class="module-duration">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        30 jours
                     </div>
-                    <div class="info-item">
-                        <div class="info-label">Référentiel</div>
-                        <div class="info-value">
-                            <?php
-                            $referentiel_name = isset($referentiel['name']) ? $referentiel['name'] : 'Non défini';
-                            
-                            // Déterminer la classe CSS en fonction du nom du référentiel
-                            $badge_class = '';
-                            if (stripos($referentiel_name, 'WEB') !== false || stripos($referentiel_name, 'MOBILE') !== false) {
-                                $badge_class = 'dev-web';
-                            } elseif (stripos($referentiel_name, 'DIG') !== false) {
-                                $badge_class = 'ref-dig';
-                            } elseif (stripos($referentiel_name, 'DATA') !== false) {
-                                $badge_class = 'dev-data';
-                            } elseif (stripos($referentiel_name, 'AWS') !== false) {
-                                $badge_class = 'aws';
-                            } elseif (stripos($referentiel_name, 'HACK') !== false) {
-                                $badge_class = 'hackeuse';
-                            }
-                            ?>
-                            <span class="ref-badge <?= $badge_class ?>"><?= htmlspecialchars($referentiel_name) ?></span>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Période de formation</div>
-                        <div class="info-value">
-                            <?= isset($promotion['date_debut']) ? date('d/m/Y', strtotime($promotion['date_debut'])) : 'Non définie' ?> - 
-                            <?= isset($promotion['date_fin']) ? date('d/m/Y', strtotime($promotion['date_fin'])) : 'Non définie' ?>
+                    <div class="module-actions">
+                        <div class="module-action">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="12" cy="5" r="1"></circle>
+                                <circle cx="12" cy="19" r="1"></circle>
+                            </svg>
                         </div>
                     </div>
                 </div>
+                <div class="module-content">
+                    <h3 class="module-title">Algorithme & Langage C</h3>
+                    <p class="module-description">Complexité algorithmique & pratique codage en langage C</p>
+                    <div class="module-status completed">Débutant</div>
+                </div>
+                <div class="module-footer">
+                    <div class="module-date">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        15 Février 2025
+                    </div>
+                    <div class="module-time">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        12:45 pm
+                    </div>
+                </div>
             </div>
+            
+            <!-- Module 2 -->
+            <div class="module-card colored-border frontend-border">
+                <div class="module-header">
+                    <div class="module-duration">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        15 jours
+                    </div>
+                    <div class="module-actions">
+                        <div class="module-action">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="12" cy="5" r="1"></circle>
+                                <circle cx="12" cy="19" r="1"></circle>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="module-content">
+                    <h3 class="module-title">Frontend 1: Html, Css & JS</h3>
+                    <p class="module-description">Création d'interfaces de design avec animations avancées !</p>
+                    <div class="module-status completed">Débutant</div>
+                </div>
+                <div class="module-footer">
+                    <div class="module-date">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        24 Mars 2025
+                    </div>
+                    <div class="module-time">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        12:45 pm
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Autres modules -->
+            <!-- ... Continuez avec les autres modules (3-6) ... -->
         </div>
     </div>
 </div>
 
 <style>
-/* Styles pour la vue de détail d'un apprenant */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.header {
+/* Styles spécifiques à la page détails apprenant, qui ne devraient pas entrer en conflit avec votre layout */
+.apprenant-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 10px;
 }
 
-.header-title h1 {
+.app-title {
     font-size: 24px;
-    color: #333;
-    margin: 0;
+    font-weight: 500;
+    color: #17a2b8;
+    margin-right: 5px;
 }
 
-.header-subtitle {
-    font-size: 14px;
-    color: #666;
+.page-title {
+    font-size: 18px;
+    color: #fd7e14;
+    font-weight: 400;
 }
 
-.btn-back {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    color: #333;
-    text-decoration: none;
-    font-size: 14px;
-    transition: all 0.2s;
-}
-
-.btn-back:hover {
-    background-color: #e9e9e9;
+.apprenant-content-wrapper {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 20px;
 }
 
 .apprenant-profile {
     background-color: white;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    padding: 20px;
 }
 
-.profile-header {
+.back-link {
     display: flex;
-    padding: 24px;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #f0f0f0;
+    align-items: center;
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
 }
 
-.profile-avatar {
-    width: 100px;
-    height: 100px;
+.back-link svg {
+    margin-right: 5px;
+}
+
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-image {
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    margin-right: 20px;
+    margin-bottom: 15px;
+    border: 3px solid #f1f1f1;
 }
 
-.profile-avatar img {
+.profile-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.profile-info {
-    flex-grow: 1;
-}
-
 .profile-name {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 600;
     color: #333;
-    margin: 0 0 5px 0;
-}
-
-.profile-matricule {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 10px;
-}
-
-.profile-actions {
-    display: flex;
-    gap: 10px;
-    margin-left: auto;
-    align-self: center;
-}
-
-.btn-edit, .btn-replace {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.2s;
-}
-
-.btn-edit {
-    background-color: #F8A427;
-    color: white;
-}
-
-.btn-replace {
-    background-color: #f5f5f5;
-    color: #333;
-    border: 1px solid #ddd;
-}
-
-.btn-edit:hover {
-    background-color: #e09320;
-}
-
-.btn-replace:hover {
-    background-color: #e9e9e9;
-}
-
-.profile-content {
-    padding: 24px;
-}
-
-.profile-section {
-    margin-bottom: 30px;
-}
-
-.profile-section:last-child {
-    margin-bottom: 0;
-}
-
-.section-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 18px;
-    font-weight: 500;
-    color: #333;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.section-title svg {
-    color: #F8A427;
-}
-
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 16px;
-}
-
-.full-width {
-    grid-column: 1 / -1;
-}
-
-.info-item {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 6px;
-}
-
-.info-label {
-    font-size: 13px;
-    color: #666;
     margin-bottom: 5px;
 }
 
-.info-value {
-    font-size: 15px;
+.profile-role {
+    display: inline-block;
+    background-color: #20c997;
+    color: white;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.profile-status {
+    background-color: #e3fcef;
+    color: #20c997;
+    padding: 3px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.contact-info {
+    margin-top: 20px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #555;
+}
+
+.contact-item svg {
+    margin-right: 10px;
+    min-width: 20px;
+}
+
+.contact-item span {
+    word-break: break-word;
+}
+
+/* Styles pour la partie droite avec les stats et modules */
+.apprenant-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.stats-row {
+    display: flex;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.stat-card {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.presence-icon {
+    background-color: #c2e7de;
+    color: #20c997;
+}
+
+.retard-icon {
+    background-color: #fff3cd;
+    color: #fd7e14;
+}
+
+.absence-icon {
+    background-color: #f8d7da;
+    color: #dc3545;
+}
+
+.stat-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 600;
     color: #333;
-    font-weight: 500;
+    line-height: 1;
 }
 
-/* Badges pour les référentiels et statuts */
-.ref-badge {
+.stat-label {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.tabs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.tab-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    background-color: #fd7e14;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.absences-info {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.module-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.module-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.module-duration {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #555;
+}
+
+.module-duration svg {
+    margin-right: 5px;
+}
+
+.module-actions {
+    display: flex;
+    align-items: center;
+}
+
+.module-action {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.module-content {
+    padding: 15px;
+}
+
+.module-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.module-description {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.module-status {
     display: inline-block;
-    padding: 4px 10px;
-    border-radius: 20px;
     font-size: 12px;
-    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 15px;
+    margin-bottom: 15px;
 }
 
-.dev-web {
-    background-color: #E6F7F5;
-    color: #19A88C;
+.module-status.completed {
+    background-color: #e3fcef;
+    color: #20c997;
 }
 
-.ref-dig {
-    background-color: #E6EEFA;
-    color: #4073ff;
+.module-status.ongoing {
+    background-color: #e2f5ff;
+    color: #17a2b8;
 }
 
-.dev-data {
-    background-color: #F0E5FA;
-    color: #9750dd;
+.module-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    border-top: 1px solid #eaeaea;
 }
 
-.aws {
-    background-color: #FFF3D9;
-    color: #F8A427;
+.module-date {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #666;
 }
 
-.hackeuse {
-    background-color: #FFE5F1;
-    color: #ff5cb0;
+.module-date svg {
+    margin-right: 5px;
 }
 
-.statut-badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
+.module-time {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #666;
 }
 
-.actif {
-    background-color: #E6F7F5;
-    color: #19A88C;
+.module-time svg {
+    margin-right: 5px;
+    color: #fd7e14;
 }
 
-.remplace {
-    background-color: #FFE5E5;
-    color: #dd5050;
+.colored-border {
+    border-top: 3px solid;
+    margin-top: -3px;
 }
 
-/* Responsive */
+.algo-border {
+    border-color: #343a40;
+}
+
+.frontend-border {
+    border-color: #28a745;
+}
+
+.backend-border {
+    border-color: #007bff;
+}
+
+/* Responsive fixes */
+@media (max-width: 992px) {
+    .apprenant-content-wrapper {
+        grid-template-columns: 1fr;
+    }
+    
+    .apprenant-profile {
+        order: 1;
+    }
+    
+    .apprenant-details {
+        order: 0;
+    }
+}
+
 @media (max-width: 768px) {
-    .profile-header {
+    .stats-row {
         flex-direction: column;
-        align-items: center;
-        text-align: center;
+        gap: 10px;
     }
     
-    .profile-avatar {
-        margin-right: 0;
-        margin-bottom: 15px;
-    }
-    
-    .profile-actions {
-        margin-left: 0;
-        margin-top: 15px;
-        justify-content: center;
-    }
-    
-    .info-grid {
+    .modules-grid {
         grid-template-columns: 1fr;
     }
 }
 </style>
+
+<!-- <script>
+// JavaScript pour activer les menus déroulants des modules
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.module-action').forEach(action => {
+        action.addEventListener('click', function(e) {
+            // Créer un menu contextuel
+            const menu = document.createElement('div');
+            menu.className = 'context-menu';
+            menu.style.position = 'absolute';
+            menu.style.top = (e.clientY + window.scrollY) + 'px';
+            menu.style.left = (e.clientX + window.scrollX) + 'px';
+            menu.style.background = 'white';
+            menu.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            menu.style.borderRadius = '4px';
+            menu.style.padding = '5px 0';
+            menu.style.zIndex = '1000';
+            
+            // Options du menu
+            const options = ['Voir détails', 'Marquer comme terminé', 'Ajouter une note'];
+            
+            options.forEach(option => {
+                const item = document.createElement('div');
+                item.textContent = option;
+                item.style.padding = '8px 15px';
+                item.style.cursor = 'pointer';
+                item.style.fontSize = '14px';
+                item.style.color = '#333';
+                
+                item.addEventListener('mouseover', function() {
+                    this.style.backgroundColor = '#f5f5f5';
+                });
+                
+                item.addEventListener('mouseout', function() {
+                    this.style.backgroundColor = 'transparent';
+                });
+                
+                menu.appendChild(item);
+            });
+            
+            // Supprimer tout autre menu contextuel existant
+            document.querySelectorAll('.context-menu').forEach(m => m.remove());
+            
+            // Ajouter le menu au corps du document
+            document.body.appendChild(menu);
+            
+            // Fermer le menu sur clic en dehors
+            document.addEventListener('click', function closeMenu(e) {
+                if (!menu.contains(e.target) && !action.contains(e.target)) {
+                    menu.remove();
+                    document.removeEventListener('click', closeMenu);
+                }
+            });
+            
+            e.stopPropagation();
+        });
+    });
+});
+</script> -->

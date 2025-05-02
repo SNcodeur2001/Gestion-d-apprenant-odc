@@ -704,7 +704,7 @@ function correct_waiting_apprenant() {
     $user = check_auth();
     
     // Récupérer l'index de l'apprenant dans la liste d'attente
-    $apprenant_index = isset($_POST['apprenant_index']) ? (int)$_POST['apprenant_index'] : null;
+    $apprenant_index = isset($_GET['index']) ? (int)$_GET['index'] : null;
     
     // Récupérer la liste d'attente
     $waiting_list = $session_services['get_session']('waiting_list', []);
@@ -712,7 +712,7 @@ function correct_waiting_apprenant() {
     // Vérifier si l'index est valide
     if ($apprenant_index === null || !isset($waiting_list[$apprenant_index])) {
         $session_services['set_flash_message']('warning', 'Apprenant non trouvé dans la liste d\'attente');
-        redirect('?page=waiting-list');
+        redirect('?page=apprenants&tab=waiting');
         return;
     }
     
@@ -722,17 +722,34 @@ function correct_waiting_apprenant() {
     // Récupérer la promotion active
     $current_promotion = $model['get_current_promotion']();
     
-    // Récupérer les référentiels de la promotion
+    // Vérifier si une promotion est active
+    if (!$current_promotion) {
+        $session_services['set_flash_message']('warning', 'Aucune promotion active. Veuillez d\'abord activer une promotion.');
+        redirect('?page=promotions');
+        return;
+    }
+    
+    // Récupérer les référentiels de la promotion active
     $referentiels = $model['get_referentiels_by_promotion']($current_promotion['id']);
     
-    // Rendre la vue pour corriger l'apprenant
-    render('admin.layout.php', 'apprenant/correct-waiting.html.php', [
+    // Stocker l'index dans la session pour le récupérer lors du traitement
+    $session_services['set_session']('correcting_apprenant_index', $apprenant_index);
+    
+    // Rendre la vue avec les données
+    render('admin.layout.php', 'apprenant/add.html.php', [
         'active_menu' => 'apprenants',
-        'apprenant' => $apprenant,
-        'apprenant_index' => $apprenant_index,
         'current_promotion' => $current_promotion,
         'referentiels' => $referentiels,
-        'errors' => $apprenant['errors'] ?? []
+        'errors' => $apprenant['errors'] ?? [],
+        'nom' => $apprenant['nom'] ?? '',
+        'prenom' => $apprenant['prenom'] ?? '',
+        'email' => $apprenant['email'] ?? '',
+        'telephone' => $apprenant['telephone'] ?? '',
+        'adresse' => $apprenant['adresse'] ?? '',
+        'date_naissance' => $apprenant['date_naissance'] ?? '',
+        'lieu_naissance' => $apprenant['lieu_naissance'] ?? '',
+        'referentiel_id' => $apprenant['referentiel_id'] ?? '',
+        'is_correction' => true // Indiquer qu'il s'agit d'une correction
     ]);
 }
 

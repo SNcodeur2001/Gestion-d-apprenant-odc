@@ -38,12 +38,13 @@ $apprenant_model = [
     'get_apprenant_by_email' => function ($email) use (&$model) {
         $data = $model['read_data']();
         
-        // Filtrer par email
-        $filtered_apprenants = array_filter($data['apprenants'] ?? [], function ($apprenant) use ($email) {
-            return $apprenant['email'] === $email;
-        });
+        foreach ($data['apprenants'] as $apprenant) {
+            if (isset($apprenant['email']) && $apprenant['email'] === $email) {
+                return $apprenant;
+            }
+        }
         
-        return !empty($filtered_apprenants) ? reset($filtered_apprenants) : null;
+        return null;
     },
     
     // Vérifier si un email existe déjà
@@ -80,30 +81,65 @@ $apprenant_model = [
     },
     
     // Créer un nouvel apprenant
-    'create_apprenant' => function ($apprenant_data) use (&$model) {
-        $data = $model['read_data']();
+    'create_apprenant' => function ($data) use (&$model) {
+        $current_data = $model['read_data']();
         
-        // Ajouter l'apprenant
-        $data['apprenants'][] = $apprenant_data;
+        // Générer un ID unique
+        $id = uniqid();
         
-        // Mettre à jour la promotion en ajoutant l'apprenant
-        foreach ($data['promotions'] as &$promotion) {
-            if ($promotion['id'] == $apprenant_data['promotion_id']) {
-                if (!isset($promotion['apprenants'])) {
-                    $promotion['apprenants'] = [];
+        // Générer un matricule
+        $matricule = $model['generate_matricule']();
+        
+        // Mot de passe par défaut
+        $default_password = 'passer123';
+        $hashed_password = password_hash($default_password, PASSWORD_DEFAULT);
+        
+        // Préparer les données de l'apprenant
+        $apprenant = [
+            'id' => $id,
+            'matricule' => $matricule,
+            'nom' => $data['nom'],
+            'prenom' => $data['prenom'],
+            'photo' => $data['photo'] ?? 'assets/images/apprenants/default.jpg',
+            'adresse' => $data['adresse'],
+            'telephone' => $data['telephone'],
+            'email' => $data['email'],
+            'date_naissance' => $data['date_naissance'],
+            'lieu_naissance' => $data['lieu_naissance'],
+            'promotion_id' => $data['promotion_id'] ?? null,
+            'referentiel_id' => $data['referentiel_id'],
+            'statut' => 'actif',
+            'date_inscription' => date('Y-m-d'),
+            'password' => $hashed_password,
+            'password_change_required' => true
+        ];
+        
+        // Ajouter l'apprenant aux données
+        $current_data['apprenants'][] = $apprenant;
+        
+        // Sauvegarder les données
+        $result = $model['write_data']($current_data);
+        
+        if ($result) {
+            // Récupérer les informations du référentiel
+            $referentiel = null;
+            foreach ($current_data['referentiels'] as $ref) {
+                if ($ref['id'] == $data['referentiel_id']) {
+                    $referentiel = $ref;
+                    break;
                 }
-                
-                $promotion['apprenants'][] = [
-                    'id' => $apprenant_data['id'],
-                    'name' => $apprenant_data['nom'] . ' ' . $apprenant_data['prenom']
-                ];
-                
-                break;
             }
+            
+            // Envoyer un email avec les identifiants
+            global $mail_services;
+            if ($referentiel) {
+                $mail_services['send_credentials_email']($apprenant, $referentiel, $default_password);
+            }
+            
+            return $id;
         }
         
-        // Mettre à jour le fichier de données
-        return $model['write_data']($data);
+        return false;
     },
     
     // Mettre à jour un apprenant existant
@@ -161,6 +197,21 @@ $apprenant_model = [
         
         // Mettre à jour le fichier de données
         return $model['write_data']($data);
+    },
+    
+    // Mettre à jour le mot de passe d'un apprenant
+    'update_apprenant_password' => function ($id, $new_password) use (&$model) {
+        $data = $model['read_data']();
+        
+        foreach ($data['apprenants'] as &$apprenant) {
+            if ($apprenant['id'] === $id) {
+                $apprenant['password'] = password_hash($new_password, PASSWORD_DEFAULT);
+                $apprenant['password_change_required'] = false;
+                return $model['write_data']($data);
+            }
+        }
+        
+        return false;
     },
     
     // Supprimer un apprenant

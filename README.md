@@ -1,3 +1,5 @@
-# ges-apprenant
-# ges-apprenant
-# ges-apprenant
+
+#login de l'admin 
+
+#admin@odc.sn
+#passer1234

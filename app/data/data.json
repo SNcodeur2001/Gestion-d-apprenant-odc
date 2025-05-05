@@ -1589,6 +1589,24 @@
             "promotion_id": 19,
             "statut": "actif",
             "date_inscription": "2025-05-03"
+        },
+        {
+            "id": "6818e09b6de0f",
+            "matricule": "1058267",
+            "nom": "Diallo",
+            "prenom": "Ousmane",
+            "photo": "assets\/images\/apprenants\/default.jpg",
+            "adresse": "Dakar, S\u00e9n\u00e9gal",
+            "telephone": "778889900",
+            "email": "ousmane.diallo@example.com",
+            "date_naissance": "1995-04-12",
+            "lieu_naissance": "Dakar",
+            "promotion_id": 19,
+            "referentiel_id": "2",
+            "statut": "actif",
+            "date_inscription": "2025-05-05",
+            "password": "$2y$10$3YSNP2PdTBUD6uZdhprVPeHyqtWmAbzR2d.b.gStsNdlPGAZBKPKO",
+            "password_change_required": true
         }
     ]
 }
